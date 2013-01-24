@@ -39,7 +39,7 @@ namespace UnitTests
         public void _003_TestCouponRetrieve()
         {
             var dictionary = new Dictionary<string, string>();
-            dictionary.Add("coupon_code", coupon_code);
+            dictionary.Add("coupon_code", time);
             var result = TwocheckoutCoupon.Retrieve(dictionary);
             Assert.IsInstanceOf<Coupon>(result);
         }
@@ -57,7 +57,7 @@ namespace UnitTests
         public void _005_TestCouponUpdate()
         {
             var dictionary = new Dictionary<string, string>();
-            dictionary.Add("coupon_code", coupon_code);
+            dictionary.Add("coupon_code", time);
             dictionary.Add("date_expire", "2099-12-23");
             var result = TwocheckoutCoupon.Update(dictionary);
             Assert.IsInstanceOf<TwocheckoutResponse>(result);
