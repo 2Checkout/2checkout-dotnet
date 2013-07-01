@@ -8,7 +8,9 @@ Full documentation for each binding will be provided in the [Wiki](https://githu
 Installation
 ------------
 
-Download [TwoCheckout.dll](https://github.com/downloads/2checkout/2checkout-dotnet/TwoCheckout-latest.dll), add to your project's References and add it's dependencies listed below.
+Clone or download the repo and add TwoCheckout-latest.dll to your project's References.
+
+**Dependency**
 * [Json.NET 4.5](http://json.codeplex.com/releases/view/92198)
 
 Example API Usage
