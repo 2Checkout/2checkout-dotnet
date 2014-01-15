@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="model\Authorization.cs" />
     <Compile Include="model\Billing.cs" />
     <Compile Include="model\Categories.cs" />
     <Compile Include="model\Comments.cs" />
@@ -74,12 +75,14 @@
     <Compile Include="model\ProductList.cs" />
     <Compile Include="model\SaleList.cs" />
     <Compile Include="model\Sales.cs" />
+    <Compile Include="test\TestCharge.cs" />
     <Compile Include="test\TestCompany.cs" />
     <Compile Include="test\TestContact.cs" />
     <Compile Include="test\TestCoupon.cs" />
     <Compile Include="test\TestOption.cs" />
     <Compile Include="test\TestProduct.cs" />
     <Compile Include="test\TestSale.cs" />
+    <Compile Include="TwocheckoutKey.cs" />
     <Compile Include="TwocheckoutResponse.cs" />
     <Compile Include="model\Sale.cs" />
     <Compile Include="model\Shipping.cs" />

@@ -12,7 +12,7 @@ namespace TwoCheckout
         public static Company Retrieve()
         {
             var Request = new TwocheckoutApi { };
-            String UrlSuffix = "acct/detail_company_info";
+            String UrlSuffix = "api/acct/detail_company_info";
             String Result = Request.ApiGet(UrlSuffix);
             TwocheckoutCompany companyObj = Newtonsoft.Json.JsonConvert.DeserializeObject<TwocheckoutCompany>(Result);
             return companyObj.vendor_company_info;

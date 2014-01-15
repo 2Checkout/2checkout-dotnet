@@ -8,10 +8,85 @@ Full documentation for each binding will be provided in the [Wiki](https://githu
 Installation
 ------------
 
-Download [TwoCheckout.dll](https://github.com/downloads/2checkout/2checkout-dotnet/TwoCheckout-latest.dll), add to your project's References and add it's dependencies listed below.
+Add TwoCheckout-latest.dll to your project's References and add it's dependencies listed below.
 * [Json.NET 4.5](http://json.codeplex.com/releases/view/92198)
 
-Example API Usage
+
+Example Purchase API Usage:
+---------------------
+
+*Example Usage:*
+
+```csharp
+TwocheckoutKey.PrivateKey = "9999999";
+// TwocheckoutKey.Mode = "sandbox";  <-- Set Mode to use your 2Checkout sandbox account
+
+try
+{
+    // Billing Address
+    var billing = new Dictionary<string, string>();
+    billing.Add("name", "Testing Tester");
+    billing.Add("addrLine1", "123 test st");
+    billing.Add("city", "Columbus");
+    billing.Add("state", "OH");
+    billing.Add("zipCode", "43123");
+    billing.Add("country", "USA");
+    billing.Add("email", "testingtester@2co.com");
+    billing.Add("phoneNumber", "555-555-5555");
+
+    // Order Details
+    var dictionary = new Dictionary<string, object>();
+    dictionary.Add("sellerId", "1817037");
+    dictionary.Add("merchantOrderId", "123");
+    dictionary.Add("token", "ZjI3NWFiMDItNTI3Ny00YWUzLThiNzYtZDQyNWQ2NGFkZDNk");
+    dictionary.Add("currency", "USD");
+    dictionary.Add("total", "1.00");
+    dictionary.Add("billingAddr", billing);
+
+    var result = TwocheckoutCharge.Authorize(dictionary);
+
+    // Do something with the result by checking response code
+    var response = result.responseCode
+}
+catch (TwocheckoutException e)
+{
+    // Do something with the exception like show and error to the user
+}
+```
+
+*Example Response:*
+
+```csharp
+{TwoCheckout.Authorization}
+  type: "AuthResponse"
+  responseCode: "APPROVED"
+  responseMsg: "Successfully authorized the provided credit card"
+  total: 1.00
+  currencyCode: "USD"
+  merchantOrderId: "123"
+  orderNumber: 105162018917
+  transactionId: 105162018926
+```
+
+*Example Exception:*
+
+```csharp
+{
+    {
+        "validationErrors": null,
+        "exception": {
+            "errorMsg": "Unauthorized",
+            "httpStatus": "401",
+            "exception": false,
+            "errorCode": "300"
+        },
+        "response": null
+    }
+}
+```
+
+
+Example Admin API Usage
 -----------------
 
 *Example Usage:*

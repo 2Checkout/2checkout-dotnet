@@ -60,5 +60,10 @@ namespace TwoCheckout
 
             return String.Join("&", Items.ToArray());
         }
+
+        public static String ConvertToJson(Dictionary<string, object> parameters)
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(parameters);
+        }
     }
 }

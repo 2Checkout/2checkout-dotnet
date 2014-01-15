@@ -5,3 +5,5 @@
 *.out
 *.classpath
 *.project
+*bin
+*obj

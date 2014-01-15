@@ -15,7 +15,7 @@ namespace TwoCheckout
         public static Sale Retrieve(Dictionary<string, string> parameters)
         {
             var Request = new TwocheckoutApi {};
-            String UrlSuffix = "sales/detail_sale";
+            String UrlSuffix = "api/sales/detail_sale";
             String Result = Request.ApiGet(UrlSuffix, parameters);
             TwocheckoutSale saleObj = Newtonsoft.Json.JsonConvert.DeserializeObject<TwocheckoutSale>(Result);
             return saleObj.sale;
@@ -24,7 +24,7 @@ namespace TwoCheckout
         public static SaleList List(Dictionary<string, string> parameters = null)
         {
             var Request = new TwocheckoutApi { };
-            String UrlSuffix = "sales/list_sales";
+            String UrlSuffix = "api/sales/list_sales";
             String Result = Request.ApiGet(UrlSuffix, parameters);
             SaleList saleObj = Newtonsoft.Json.JsonConvert.DeserializeObject<SaleList>(Result);
             return saleObj;
@@ -36,13 +36,13 @@ namespace TwoCheckout
             TwocheckoutResponse activeObj = new TwocheckoutResponse();
             if (parameters.ContainsKey("sale_id"))
             {
-                String UrlSuffix = "sales/detail_sale";
+                String UrlSuffix = "api/sales/detail_sale";
                 var Request = new TwocheckoutApi {};
                 Result = Request.ApiGet(UrlSuffix, parameters);
                 Dictionary<string, string> Active = TwocheckoutUtil.Active(Result);
                 if (Active.ContainsKey("lineitem_id0"))
                 {
-                    UrlSuffix = "sales/stop_lineitem_recurring";
+                    UrlSuffix = "api/sales/stop_lineitem_recurring";
                     var Response = new Dictionary<string, string>();
                     String stoppedLineitems = null;
                     foreach (var entry in Active)
@@ -69,7 +69,7 @@ namespace TwoCheckout
             } 
             else 
             {
-                String UrlSuffix = "sales/stop_lineitem_recurring";
+                String UrlSuffix = "api/sales/stop_lineitem_recurring";
                 var Request = new TwocheckoutApi {};
                 Result = Request.ApiPost(UrlSuffix, parameters);
                 activeObj = Newtonsoft.Json.JsonConvert.DeserializeObject<TwocheckoutResponse>(Result);
@@ -84,13 +84,13 @@ namespace TwoCheckout
             TwocheckoutResponse refundObj = new TwocheckoutResponse();
             if (parameters.ContainsKey("sale_id") || parameters.ContainsKey("invoice_id"))
             {
-                String UrlSuffix = "sales/refund_invoice";
+                String UrlSuffix = "api/sales/refund_invoice";
                 Result = Request.ApiPost(UrlSuffix, parameters);
                 refundObj = Newtonsoft.Json.JsonConvert.DeserializeObject<TwocheckoutResponse>(Result);
             }
             else if (parameters.ContainsKey("lineitem_id"))
             {
-                String UrlSuffix = "sales/refund_lineitem";
+                String UrlSuffix = "api/sales/refund_lineitem";
                 Result = Request.ApiPost(UrlSuffix, parameters);
                 refundObj = Newtonsoft.Json.JsonConvert.DeserializeObject<TwocheckoutResponse>(Result);
             }
@@ -105,7 +105,7 @@ namespace TwoCheckout
         public static TwocheckoutResponse Comment(Dictionary<string, string> parameters)
         {
             var Request = new TwocheckoutApi {};
-            String UrlSuffix = "sales/create_comment";
+            String UrlSuffix = "api/sales/create_comment";
             String Result = Request.ApiPost(UrlSuffix, parameters);
             TwocheckoutResponse commentObj = Newtonsoft.Json.JsonConvert.DeserializeObject<TwocheckoutResponse>(Result);
             return commentObj;
@@ -114,7 +114,7 @@ namespace TwoCheckout
         public static TwocheckoutResponse Ship(Dictionary<string, string> parameters)
         {
             var Request = new TwocheckoutApi {};
-            String UrlSuffix = "sales/mark_shipped";
+            String UrlSuffix = "api/sales/mark_shipped";
             String Result = Request.ApiPost(UrlSuffix, parameters);
             TwocheckoutResponse shipObj = Newtonsoft.Json.JsonConvert.DeserializeObject<TwocheckoutResponse>(Result);
             return shipObj;

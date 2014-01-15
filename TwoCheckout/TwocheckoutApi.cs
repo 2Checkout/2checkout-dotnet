@@ -22,6 +22,18 @@ namespace TwoCheckout
             set { TwocheckoutConfig.ApiPassword = value; }
         }
 
+        private String ApiKey
+        {
+            get { return TwocheckoutKey.PrivateKey; }
+            set { TwocheckoutKey.PrivateKey = value; }
+        }
+
+        private String Mode
+        {
+            get { return TwocheckoutKey.Mode; }
+            set { TwocheckoutKey.Mode = value; }
+        }
+
         public String ApiGet(String urlSuffix, Dictionary<string, string> args = null)
         {
             String Url = TwocheckoutConfig.BaseUrl + urlSuffix;
@@ -85,6 +97,64 @@ namespace TwoCheckout
                 Request.Method = "POST";
                 Request.UserAgent = "2Checkout .NET/0.1.0";
                 Request.ContentType = "application/x-www-form-urlencoded";
+                Request.Accept = "application/json";
+                byte[] byteData = UTF8Encoding.UTF8.GetBytes(Data.ToString());
+                Request.ContentLength = byteData.Length;
+                using (Stream postStream = Request.GetRequestStream())
+                {
+                    postStream.Write(byteData, 0, byteData.Length);
+                }
+                using (Response = Request.GetResponse() as HttpWebResponse)
+                {
+                    StreamReader reader = new StreamReader(Response.GetResponseStream());
+                    Result = reader.ReadToEnd();
+                }
+            }
+            catch (WebException wex)
+            {
+                if (wex.Response != null)
+                {
+                    using (HttpWebResponse ErrorResponse = (HttpWebResponse)wex.Response)
+                    {
+                        StreamReader Reader = new StreamReader(ErrorResponse.GetResponseStream());
+                        Result = Reader.ReadToEnd();
+                        throw new TwocheckoutException(Result);
+                    }
+                    throw;
+                }
+                return Result;
+            }
+            finally
+            {
+                if (Response != null) { Response.Close(); }
+            }
+            return Result;
+        }
+
+        public String ApiJson(String urlSuffix, Dictionary<string, object> args)
+        {
+            String Url = null;
+            if (Mode == "sandbox")
+            {
+                Url = TwocheckoutConfig.SandboxBaseUrl + urlSuffix;
+            }
+            else
+            {
+                Url = TwocheckoutConfig.BaseUrl + urlSuffix;
+            }
+            args.Add("privateKey", ApiKey);
+            String Data = TwocheckoutUtil.ConvertToJson(args);
+            Uri Address = new Uri(Url);
+            String Result = null;
+            HttpWebRequest Request;
+            HttpWebResponse Response = null;
+
+            try
+            {
+                Request = WebRequest.Create(Address) as HttpWebRequest;
+                Request.Method = "POST";
+                Request.UserAgent = "2Checkout .NET/0.1.0";
+                Request.ContentType = "application/json";
                 Request.Accept = "application/json";
                 byte[] byteData = UTF8Encoding.UTF8.GetBytes(Data.ToString());
                 Request.ContentLength = byteData.Length;

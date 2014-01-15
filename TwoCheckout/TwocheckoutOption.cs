@@ -15,7 +15,7 @@ namespace TwoCheckout
         public static Option Retrieve(Dictionary<string, string> parameters)
         {
             var Request = new TwocheckoutApi { };
-            String UrlSuffix = "products/detail_option";
+            String UrlSuffix = "api/products/detail_option";
             String Result = Request.ApiGet(UrlSuffix, parameters);
             TwocheckoutOption optObj = Newtonsoft.Json.JsonConvert.DeserializeObject<TwocheckoutOption>(Result);
             return optObj.option[0];
@@ -24,7 +24,7 @@ namespace TwoCheckout
         public static OptionList List(Dictionary<string, string> parameters = null)
         {
             var Request = new TwocheckoutApi { };
-            String UrlSuffix = "products/list_options";
+            String UrlSuffix = "api/products/list_options";
             String Result = Request.ApiGet(UrlSuffix, parameters);
             OptionList listObj = Newtonsoft.Json.JsonConvert.DeserializeObject<OptionList>(Result);
             return listObj;
@@ -33,7 +33,7 @@ namespace TwoCheckout
         public static TwocheckoutResponse Create(Dictionary<string, string> parameters)
         {
             var Request = new TwocheckoutApi { };
-            String UrlSuffix = "products/create_option";
+            String UrlSuffix = "api/products/create_option";
             String Result = Request.ApiPost(UrlSuffix, parameters);
             TwocheckoutResponse createObj = Newtonsoft.Json.JsonConvert.DeserializeObject<TwocheckoutResponse>(Result);
             return createObj;
@@ -42,7 +42,7 @@ namespace TwoCheckout
         public static TwocheckoutResponse Update(Dictionary<string, string> parameters)
         {
             var Request = new TwocheckoutApi { };
-            String UrlSuffix = "products/update_option";
+            String UrlSuffix = "api/products/update_option";
             String Result = Request.ApiPost(UrlSuffix, parameters);
             TwocheckoutResponse updateObj = Newtonsoft.Json.JsonConvert.DeserializeObject<TwocheckoutResponse>(Result);
             return updateObj;
@@ -51,7 +51,7 @@ namespace TwoCheckout
         public static TwocheckoutResponse Delete(Dictionary<string, string> parameters)
         {
             var Request = new TwocheckoutApi { };
-            String UrlSuffix = "products/delete_option";
+            String UrlSuffix = "api/products/delete_option";
             String Result = Request.ApiPost(UrlSuffix, parameters);
             TwocheckoutResponse deleteObj = Newtonsoft.Json.JsonConvert.DeserializeObject<TwocheckoutResponse>(Result);
             return deleteObj;
