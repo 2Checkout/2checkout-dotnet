@@ -1,15 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
+using System.IO;
+using System.Net;
+using System.Web;
 
 namespace TwoCheckout
 {
-    public class TwocheckoutUtil
+    public class TwoCheckoutUtil
     {
+        public static String StopActiveLineitems(Dictionary<string, string> active )
+        {
+            String stoppedLineitems = null;
+            SaleStopServiceOptions options = new SaleStopServiceOptions();
+            foreach (var entry in active)
+            {
+                options.lineitem_id = Convert.ToInt64(entry.Value);
+                try 
+	            {	        
+		            TwoCheckoutUtil.Request("api/sales/stop_lineitem_recurring", "POST", "admin", options);
+                    stoppedLineitems += "," + entry.Value; //log the stopped lineitem in response mesage
+	            }
+	            catch (TwoCheckoutException)
+	            {
+		            return "{ 'response_code': 'NOTICE', 'response_message': 'Linetiem " + entry.Value + " could not be stopped.' }";
+	            }
+            }
+            stoppedLineitems = stoppedLineitems.Remove(0, 1); //drop the leading comma
+            return "{ 'response_code': 'OK', 'response_message': " + stoppedLineitems + " }";
+        }
+
         public static Dictionary<string, string> Active(String response)
         {
             JObject Sale = JObject.Parse(response);
@@ -51,7 +74,37 @@ namespace TwoCheckout
             return SBuilder.ToString().ToUpper();
         }
 
-        public static String ConstructQueryString(Dictionary<string, string> parameters)
+        public static string SerializeObjectToQueryString(object source)
+        {
+            var type = source.GetType();
+            var queryString = new StringBuilder();
+
+            foreach (var property in type.GetProperties())
+            {
+                var propertyValue = property.GetValue(source, new object[] { });
+
+                if (propertyValue == null)
+                    continue;
+
+                queryString.Append(property.Name);
+                queryString.Append("=");
+                queryString.Append(propertyValue.ToString());
+                queryString.Append("&");
+            }
+
+            if (queryString.Length > 0)
+                queryString.Remove(queryString.Length - 1, 1);
+
+            return queryString.ToString();
+        }
+
+        public static String ConvertToJson(object source)
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(source, Formatting.None, 
+                new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+        }
+
+        public static String DictionaryToQueryString(Dictionary<string, string> parameters)
         {
             List<string> Items = new List<string>();
 
@@ -61,9 +114,89 @@ namespace TwoCheckout
             return String.Join("&", Items.ToArray());
         }
 
-        public static String ConvertToJson(Dictionary<string, object> parameters)
+        public static T MapToObject<T>(String json, String pick = null)
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(parameters);
+            JObject RawObject = JObject.Parse(json);
+            String PickedString = (pick != null) ? JsonConvert.SerializeObject(RawObject[pick]) : JsonConvert.SerializeObject(RawObject);
+            return JsonConvert.DeserializeObject<T>(PickedString);
+        }
+
+        public static String Request(String urlSuffix, String method, String type, Object args = null)
+        {
+            HttpWebRequest Request;
+            String Url = TwoCheckoutConfig.Sandbox ? 
+                String.Concat(TwoCheckoutConfig.SandboxUrl, urlSuffix) : 
+                String.Concat(TwoCheckoutConfig.BaseUrl, urlSuffix);
+            String Params = null;
+            String Result = null;
+            String ContentType = null;
+            HttpWebResponse Response = null;
+            NetworkCredential Credential = null;
+
+            if (type == "admin")
+            {
+                ContentType = (method == "POST") ? "application/x-www-form-urlencoded" : "*/*";
+                Params = (args != null) ? TwoCheckoutUtil.SerializeObjectToQueryString(args) : null;
+                Url = (method == "GET") ? String.Concat(Url, "?", Params) : Url;
+                Credential = new NetworkCredential(TwoCheckoutConfig.ApiUsername, TwoCheckoutConfig.ApiPassword);
+            }
+            else
+            {
+                ContentType = "application/json";
+                Params = TwoCheckoutUtil.ConvertToJson(args);
+            }
+
+            try
+            {
+                Request = WebRequest.Create(Url.ToString()) as HttpWebRequest;
+                ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
+                Request.Credentials = Credential;
+                Request.Method = method;
+                Request.ContentType = ContentType;
+                Request.Accept = "application/json";
+                Request.UserAgent = "2Checkout .NET/" + TwoCheckoutConfig.Version;
+                if (method == "POST" && Params != "")
+                {
+                    byte[] byteData = UTF8Encoding.UTF8.GetBytes(Params);
+                    Request.ContentLength = byteData.Length;
+                    using (Stream postStream = Request.GetRequestStream())
+                    {
+                        postStream.Write(byteData, 0, byteData.Length);
+                    }
+                }
+                using (Response = Request.GetResponse() as HttpWebResponse)
+                {
+                    StreamReader reader = new StreamReader(Response.GetResponseStream());
+                    Result = reader.ReadToEnd();
+                    return Result;
+                }
+            }
+            catch (WebException wex)
+            {
+                if (wex.Response != null)
+                {
+                    using (HttpWebResponse errorResponse = (HttpWebResponse)wex.Response)
+                    {
+                        StreamReader reader = new StreamReader(errorResponse.GetResponseStream());
+                        Result = reader.ReadToEnd();
+                        JObject RawError = JObject.Parse(Result);
+                        if (RawError["errors"] != null)
+                        {
+                            Result = RawError["errors"][0]["message"].ToString();
+                        }
+                        else if (RawError["exception"] != null)
+                        {
+                            Result = RawError["exception"]["errorMsg"].ToString();
+                        }
+                        throw new TwoCheckoutException(Result);
+                    }
+                }
+                return Result;
+            }
+            finally
+            {
+                if (Response != null) { Response.Close(); }
+            }
         }
     }
 }

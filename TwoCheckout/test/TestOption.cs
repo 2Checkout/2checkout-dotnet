@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using TwoCheckout;
 
@@ -9,39 +7,39 @@ namespace UnitTests
 {
     public class TestOption
     {
-        // Option
-        public String option_id { get; set; }
+        // Product
+        public long? option_id { get; set; }
 
         // Set API Credentials
         [Test]
         public void _001_SetUser()
         {
-            TwocheckoutConfig.ApiUsername = "APIuser1817037";
-            TwocheckoutConfig.ApiPassword = "APIpass1817037";
+            TwoCheckoutConfig.ApiUsername = "APIuser1817037";
+            TwoCheckoutConfig.ApiPassword = "APIpass1817037";
         }
 
         // Create Option
         [Test]
         public void _002_TestOptionCreate()
         {
-            var dictionary = new Dictionary<string, string>();
-            dictionary.Add("name", "TestProduct");
-            dictionary.Add("option_name", "TestOption");
-            dictionary.Add("option_value_id", "Option1");
-            dictionary.Add("option_value_name", "OptionValue");
-            dictionary.Add("option_value_surcharge", "0.01");
-            var result = TwocheckoutOption.Create(dictionary);
+            var ServiceObject = new OptionService();
+            var ArgsObject = new OptionCreateServiceOptions();
+            ArgsObject.option_name = "Test Option";
+            ArgsObject.option_value_name = "Test Opiton Value";
+            ArgsObject.option_value_surcharge = (decimal)2.00;
+            var result = ServiceObject.Create(ArgsObject);
             option_id = result.option_id;
-            Assert.IsInstanceOf<TwocheckoutResponse>(result);
+            Assert.IsInstanceOf<TwoCheckoutResponse>(result);
         }
 
         // Retrieve Option
         [Test]
         public void _003_TestOptionRetrieve()
         {
-            var dictionary = new Dictionary<string, string>();
-            dictionary.Add("option_id", option_id);
-            var result = TwocheckoutOption.Retrieve(dictionary);
+            var ServiceObject = new OptionService();
+            var ArgsObject = new OptionRetrieveServiceOptions();
+            ArgsObject.option_id = option_id;
+            var result = ServiceObject.Retrieve(ArgsObject);
             Assert.IsInstanceOf<Option>(result);
         }
 
@@ -49,7 +47,8 @@ namespace UnitTests
         [Test]
         public void _004_TestOptionList()
         {
-            var result = TwocheckoutOption.List();
+            var ServiceObject = new OptionService();
+            var result = ServiceObject.List();
             Assert.IsInstanceOf<OptionList>(result);
         }
 
@@ -57,21 +56,25 @@ namespace UnitTests
         [Test]
         public void _005_TestOptionUpdate()
         {
-            var dictionary = new Dictionary<string, string>();
-            dictionary.Add("option_id", option_id);
-            dictionary.Add("option_name", "TestOption123");
-            var result = TwocheckoutOption.Update(dictionary);
-            Assert.IsInstanceOf<TwocheckoutResponse>(result);
+            var ServiceObject = new OptionService();
+            var ArgsObject = new OptionUpdateServiceOptions();
+            ArgsObject.option_id = option_id;
+            ArgsObject.option_name = "Test Option 123";
+            ArgsObject.option_value_name = "Test Option Value 123";
+            ArgsObject.option_value_surcharge = (decimal)1.00;
+            var result = ServiceObject.Update(ArgsObject);
+            Assert.IsInstanceOf<TwoCheckoutResponse>(result);
         }
 
         // Delete Option
         [Test]
         public void _006_TestOptionDelete()
         {
-            var dictionary = new Dictionary<string, string>();
-            dictionary.Add("option_id", option_id);
-            var result = TwocheckoutOption.Delete(dictionary);
-            Assert.IsInstanceOf<TwocheckoutResponse>(result);
+            var ServiceObject = new OptionService();
+            var ArgsObject = new OptionDeleteServiceOptions();
+            ArgsObject.option_id = option_id;
+            var result = ServiceObject.Delete(ArgsObject);
+            Assert.IsInstanceOf<TwoCheckoutResponse>(result);
         }
     }
 }

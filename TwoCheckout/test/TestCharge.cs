@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using TwoCheckout;
 
@@ -9,14 +7,15 @@ namespace UnitTests
 {
     public class TestCharge
     {
-        // Sales
-        String token = "MmQ3NWY4MmQtOGQ0YS00NDdmLWI4OTAtZTVjYjI4MzZhNjZh";
+        // Token
+        String token = "YjdhN2Q0ZDItZDEzYS00Y2RlLWI3MDUtYjkzYzZlMjA2OWY2";
 
         // Set API Key
         [Test]
         public void _002_SetKey()
         {
-            TwocheckoutKey.PrivateKey = "9999999";
+            TwoCheckoutConfig.PrivateKey = "99999999999999999999";
+            TwoCheckoutConfig.SellerID = "1817037";
         }
 
         // API Authorization
@@ -25,29 +24,59 @@ namespace UnitTests
         {
             try
             {
-                var billing = new Dictionary<string, string>();
-                billing.Add("name", "Testing Tester");
-                billing.Add("addrLine1", "123 test st");
-                billing.Add("city", "Columbus");
-                billing.Add("state", "OH");
-                billing.Add("zipCode", "43123");
-                billing.Add("country", "USA");
-                billing.Add("email", "testingtester@2co.com");
-                billing.Add("phoneNumber", "555-555-5555");
+                var Service = new ChargeService();
 
-                var dictionary = new Dictionary<string, object>();
-                dictionary.Add("sellerId", "1817037");
-                dictionary.Add("merchantOrderId", "123");
-                dictionary.Add("token", token);
-                dictionary.Add("currency", "USD");
-                dictionary.Add("total", "1.00");
-                dictionary.Add("billingAddr", billing);
+                var Option1 = new AuthLineitemOption();
+                Option1.optName = "Test Option 1";
+                Option1.optValue = "Large";
+                Option1.optSurcharge = (decimal)1.00;
 
-                var result = TwocheckoutCharge.Authorize(dictionary);
+                var Options = new List<AuthLineitemOption>();
+                Options.Add(Option1);
+
+                var LineItem1 = new AuthLineitem();
+                LineItem1.name = "test item";
+                LineItem1.price = (decimal)10.00;
+                LineItem1.quantity = 1;
+                LineItem1.options = Options;
+
+                var Lineitems = new List<AuthLineitem>();
+                Lineitems.Add(LineItem1);
+
+                var Billing = new AuthBillingAddress();
+                Billing.addrLine1 = "123 test st";
+                Billing.city = "Columbus";
+                Billing.zipCode = "43123";
+                Billing.state = "OH";
+                Billing.country = "USA";
+                Billing.name = "Testing Tester";
+                Billing.email = "example@2co.com";
+                Billing.phone = "5555555555";
+
+                var Shipping = new AuthShippingAddress();
+                Shipping.addrLine1 = "123 test st";
+                Shipping.city = "Columbus";
+                Shipping.state = "OH";
+                Shipping.country = "USA";
+                Shipping.name = "Testing Tester";
+
+
+                var Sale = new ChargeAuthorizeServiceOptions();
+                Sale.lineItems = Lineitems;
+                Sale.currency = "USD";
+                Sale.merchantOrderId = "123";
+                Sale.billingAddr = Billing;
+                Sale.shippingAddr = Shipping;
+                Sale.token = token;
+
+                var Charge = new ChargeService();
+
+                var result = Charge.Authorize(Sale);
+                Assert.IsInstanceOf<Authorization>(result);
             }
-            catch (TwocheckoutException e)
+            catch (TwoCheckoutException e)
             {
-                Assert.IsInstanceOf<TwocheckoutException>(e);
+                Assert.IsInstanceOf<TwoCheckoutException>(e);
             }
         }
     }

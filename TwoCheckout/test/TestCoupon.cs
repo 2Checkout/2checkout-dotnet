@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using TwoCheckout;
 
@@ -11,36 +9,38 @@ namespace UnitTests
     {
         // Coupon
         public String coupon_code { get; set; }
-        public String time = DateTime.Now.ToString("ss");
+        public String time = DateTime.Now.ToString("ddss") + DateTime.Now.ToString("ss");
 
         // Set API Credentials
         [Test]
         public void _001_SetUser()
         {
-            TwocheckoutConfig.ApiUsername = "APIuser1817037";
-            TwocheckoutConfig.ApiPassword = "APIpass1817037";
+            TwoCheckoutConfig.ApiUsername = "APIuser1817037";
+            TwoCheckoutConfig.ApiPassword = "APIpass1817037";
         }
 
-        // Create Coupon
+                // Create Coupon
         [Test]
         public void _002_TestCouponCreate()
         {
-            var dictionary = new Dictionary<string, string>();
-            dictionary.Add("coupon_code", time);
-            dictionary.Add("date_expire", "2099-12-22");
-            dictionary.Add("type", "shipping");
-            var result = TwocheckoutCoupon.Create(dictionary);
+            var ServiceObject = new CouponService();
+            var ArgsObject = new CouponCreateServiceOptions();
+            ArgsObject.coupon_code = time;
+            ArgsObject.date_expire = "2099-12-22";
+            ArgsObject.type = "shipping";
+            var result = ServiceObject.Create(ArgsObject);
             coupon_code = result.coupon_code;
-            Assert.IsInstanceOf<TwocheckoutResponse>(result);
+            Assert.IsInstanceOf<TwoCheckoutResponse>(result);
         }
 
         // Retrieve Coupon
         [Test]
         public void _003_TestCouponRetrieve()
         {
-            var dictionary = new Dictionary<string, string>();
-            dictionary.Add("coupon_code", time);
-            var result = TwocheckoutCoupon.Retrieve(dictionary);
+            var ServiceObject = new CouponService();
+            var ArgsObject = new CouponRetrieveServiceOptions();
+            ArgsObject.coupon_code = coupon_code;
+            var result = ServiceObject.Retrieve(ArgsObject);
             Assert.IsInstanceOf<Coupon>(result);
         }
 
@@ -48,7 +48,8 @@ namespace UnitTests
         [Test]
         public void _004_TestCouponList()
         {
-            var result = TwocheckoutCoupon.List();
+            var ServiceObject = new CouponService();
+            var result = ServiceObject.List();
             Assert.IsInstanceOf<CouponList>(result);
         }
 
@@ -56,21 +57,24 @@ namespace UnitTests
         [Test]
         public void _005_TestCouponUpdate()
         {
-            var dictionary = new Dictionary<string, string>();
-            dictionary.Add("coupon_code", time);
-            dictionary.Add("date_expire", "2099-12-23");
-            var result = TwocheckoutCoupon.Update(dictionary);
-            Assert.IsInstanceOf<TwocheckoutResponse>(result);
+            var ServiceObject = new CouponService();
+            var ArgsObject = new CouponUpdateServiceOptions();
+            ArgsObject.coupon_code = coupon_code;
+            ArgsObject.date_expire = "2099-12-22";
+            var result = ServiceObject.Update(ArgsObject);
+            coupon_code = result.coupon_code;
+            Assert.IsInstanceOf<TwoCheckoutResponse>(result);
         }
 
         // Delete Coupon
         [Test]
         public void _006_TestCouponDelete()
         {
-            var dictionary = new Dictionary<string, string>();
-            dictionary.Add("coupon_code", coupon_code);
-            var result = TwocheckoutCoupon.Delete(dictionary);
-            Assert.IsInstanceOf<TwocheckoutResponse>(result);
+            var ServiceObject = new CouponService();
+            var ArgsObject = new CouponDeleteServiceOptions();
+            ArgsObject.coupon_code = coupon_code;
+            var result = ServiceObject.Delete(ArgsObject);
+            Assert.IsInstanceOf<TwoCheckoutResponse>(result);
         }
     }
 }

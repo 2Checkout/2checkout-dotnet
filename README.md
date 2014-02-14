@@ -3,54 +3,52 @@
 
 This library provides developers with a simple set of bindings to the 2Checkout purchase routine, Instant Notification Service and Back Office API.
 
-Full documentation for each binding will be provided in the [Wiki](https://github.com/2checkout/2checkout-dotnet/wiki).
+Full documentation for each binding is provided at [https://www.2checkout.com/documentation/libraries/net](https://www.2checkout.com/documentation/libraries/net).
 
 Installation
 ------------
 
-Add TwoCheckout-latest.dll to your project's References and add it's dependencies listed below.
-* [Json.NET 4.5](http://json.codeplex.com/releases/view/92198)
+Add TwoCheckout.dll to your project's References and add it's dependencies listed below.
+* [Json.NET 6.0](https://json.codeplex.com/releases/view/117958)
 
 
-Example Purchase API Usage:
+Example Payment API Usage:
 ---------------------
 
 *Example Usage:*
 
 ```csharp
-TwocheckoutKey.PrivateKey = "9999999";
-// TwocheckoutKey.Mode = "sandbox";  <-- Set Mode to use your 2Checkout sandbox account
+TwoCheckoutConfig.SellerID = "1817037";
+TwoCheckoutConfig.PrivateKey = "8CE03B2D-FE41-4C53-9156-52A8ED5A0FA3";
+//TwoCheckoutConfig.Sandbox = true;   <-- Set Mode to use your 2Checkout sandbox account
 
 try
 {
-    // Billing Address
-    var billing = new Dictionary<string, string>();
-    billing.Add("name", "Testing Tester");
-    billing.Add("addrLine1", "123 test st");
-    billing.Add("city", "Columbus");
-    billing.Add("state", "OH");
-    billing.Add("zipCode", "43123");
-    billing.Add("country", "USA");
-    billing.Add("email", "testingtester@2co.com");
-    billing.Add("phoneNumber", "555-555-5555");
+    var Billing = new AuthBillingAddress();
+    Billing.addrLine1 = "123 test st";
+    Billing.city = "Columbus";
+    Billing.zipCode = "43123";
+    Billing.state = "OH";
+    Billing.country = "USA";
+    Billing.name = "Testing Tester";
+    Billing.email = "example@2co.com";
+    Billing.phone = "5555555555";
 
-    // Order Details
-    var dictionary = new Dictionary<string, object>();
-    dictionary.Add("sellerId", "1817037");
-    dictionary.Add("merchantOrderId", "123");
-    dictionary.Add("token", "ZjI3NWFiMDItNTI3Ny00YWUzLThiNzYtZDQyNWQ2NGFkZDNk");
-    dictionary.Add("currency", "USD");
-    dictionary.Add("total", "1.00");
-    dictionary.Add("billingAddr", billing);
+    var Customer = new ChargeAuthorizeServiceOptions();
+    Customer.total = (decimal)1.00;
+    Customer.currency = "USD";
+    Customer.merchantOrderId = "123";
+    Customer.billingAddr = Billing;
+    Customer.token = "MzIwNzI3ZWQtMjdiNy00NTVhLWFhZTEtZGUyZGQ3MTk1ZDMw";
 
-    var result = TwocheckoutCharge.Authorize(dictionary);
-
-    // Do something with the result by checking response code
-    var response = result.responseCode
+    var Charge = new ChargeService();
+    
+    var result = Charge.Authorize(Customer);
+    Console.Write(result);
 }
-catch (TwocheckoutException e)
+catch (TwoCheckoutException e)
 {
-    // Do something with the exception like show and error to the user
+    Console.Write(e);
 }
 ```
 
@@ -58,31 +56,44 @@ catch (TwocheckoutException e)
 
 ```csharp
 {TwoCheckout.Authorization}
-  type: "AuthResponse"
-  responseCode: "APPROVED"
-  responseMsg: "Successfully authorized the provided credit card"
-  total: 1.00
-  currencyCode: "USD"
-  merchantOrderId: "123"
-  orderNumber: 105162018917
-  transactionId: 105162018926
+    responseMsg: "Successfully authorized the provided credit card"
+    responseCode: "APPROVED"
+    type: "AuthResponse"
+    orderNumber: 205205956108
+    merchantOrderId: "123"
+    transactionId: 205205956117
+    currencyCode: "USD"
+    total: 1.00
+    lineItems: ...
+      {TwoCheckout.AuthLineitem}
+        type: "product"
+        name: "123"
+        quantity: 1
+        price: 1.0
+        tangible: "N"
+        productId: ""
+        recurrence: null
+        duration: null
+        startupFee: null
+        options: ...
+        billingAddr: { }
+      {TwoCheckout.AuthBillingAddress}
+        name: "Testing Tester"
+        addrLine1: "123 test st"
+        addrLine2: null
+        city: "Columbus"
+        state: "OH"
+        zipCode: "43123"
+        country: "USA"
+        email: "example@2co.com"
+        phone: null
+        phoneExt: null
 ```
 
 *Example Exception:*
 
 ```csharp
-{
-    {
-        "validationErrors": null,
-        "exception": {
-            "errorMsg": "Unauthorized",
-            "httpStatus": "401",
-            "exception": false,
-            "errorCode": "300"
-        },
-        "response": null
-    }
-}
+Unauthorized
 ```
 
 
@@ -92,18 +103,28 @@ Example Admin API Usage
 *Example Usage:*
 
 ```csharp
-TwocheckoutConfig.ApiUsername = "APIuser1817037";
-TwocheckoutConfig.ApiPassword = "APIpass1817037";
+TwoCheckoutConfig.ApiUsername = "APIuser1817037";
+TwoCheckoutConfig.ApiPassword = "APIpass1817037";
 
-var dictionary = new Dictionary<string, string>();
-dictionary.Add("sale_id", "4784990526");
-var result = TwocheckoutSale.Refund(dictionary);
+try
+{
+    var ServiceObject = new SaleService();
+    var ArgsObject = new SaleRefundServiceOptions();
+    ArgsObject.invoice_id = invoice_id;
+    ArgsObject.comment = "test refund";
+    ArgsObject.category = 5;
+    var result = ServiceObject.Refund(ArgsObject);
+}
+catch (TwoCheckoutException e)
+{
+    // read e.message
+}
 ```
 
 *Example Response:*
 
 ```csharp
-{TwoCheckout.TwocheckoutResponse}
+{TwoCheckout.TwoCheckoutResponse}
   response_code: "OK"
   response_message: "refund added to invoice"
 ```
@@ -121,7 +142,7 @@ dictionary.Add("li_0_type", "product");
 dictionary.Add("li_0_name", "Example Product");
 dictionary.Add("li_0_price", "1.00");
 
-String PaymentForm = TwocheckoutCharge.Submit(dictionary);
+String PaymentForm = ChargeService.Submit(dictionary);
 ```
 
 Example Return Usage:
@@ -130,21 +151,21 @@ Example Return Usage:
 *Example Usage:*
 
 ```csharp
-var dictionary = new Dictionary<string, string>();
-dictionary.Add("sid", Request.Params["sid"]);
-dictionary.Add("order_number", Request.Params["order_number"]);
-dictionary.Add("total", Request.Params["total"]);
-dictionary.Add("key", Request.Params["key"]);
+TwoCheckoutConfig.SecretWord = "tango";
+TwoCheckoutConfig.SellerID = "1817037";
 
-var result = TwocheckoutReturn.Check(dictionary, "tango");
+var Return = new ReturnService();
+var Args = new ReturnCheckServiceOptions();
+Args.total = "0.01";
+Args.order_number = Request.Params["order_number"];
+Args.key = Request.Params["key"];
+bool result = Return.Check(Args);
 ```
 
 *Example Response:*
 
 ```csharp
-{TwoCheckout.TwocheckoutResponse}
-  response_code: "Success"
-  response_message: "Hash Matched"
+true
 ```
 
 Example INS Usage:
@@ -153,58 +174,66 @@ Example INS Usage:
 *Example Usage:*
 
 ```csharp
-var dictionary = new Dictionary<string, string>();
-dictionary.Add("vendor_id", Request.Params["vendor_id"]);
-dictionary.Add("sale_id", Request.Params["sale_id"]);
-dictionary.Add("invoice_id", Request.Params["invoice_id"]);
-dictionary.Add("md5_hash", Request.Params["md5_hash"]);
+TwoCheckoutConfig.SecretWord = "tango";
+TwoCheckoutConfig.SellerID = "1817037";
 
-var result = TwocheckoutNotification.Check(dictionary, "tango");
+var Notification = new NotificationService();
+var Args = new NotificationCheckServiceOptions();
+Args.invoice_id = Request.Params["invoice_id"];
+Args.sale_id = Request.Params["sale_id"];
+Args.md5_hash = Request.Params["md5_hash"];
+bool result = Notification.Check(Args);
 ```
 
 *Example Response:*
 
 ```csharp
-{TwoCheckout.TwocheckoutResponse}
-  response_code: "Success"
-  response_message: "Hash Matched"
+true
 ```
 
 Exceptions:
 ------------------
 
-TwocheckoutException exceptions are thrown by if an error has returned. It is best to catch these exceptions so that they can be gracefully handled in your application.
+TwoCheckoutException exceptions are thrown by if an error has returned. It is best to catch these exceptions so that they can be gracefully handled in your application.
 
 *Example Catch*
 
 ```csharp
-TwocheckoutConfig.ApiUsername = "APIuser1817037";
-TwocheckoutConfig.ApiPassword = "APIpass1817037";
+TwoCheckoutConfig.SellerID = "1817037";
+TwoCheckoutConfig.PrivateKey = "8CE03B2D-FE41-4C53-9156-52A8ED5A0FA3";
 
 try
 {
-	var dictionary = new Dictionary<string, string>();
-	dictionary.Add("sale_id", "4784990526");
-	var result = TwocheckoutSale.Refund(dictionary);
+    var Billing = new AuthBillingAddress();
+    Billing.addrLine1 = "123 test st";
+    Billing.city = "Columbus";
+    Billing.zipCode = "43123";
+    Billing.state = "OH";
+    Billing.country = "USA";
+    Billing.name = "Testing Tester";
+    Billing.email = "example@2co.com";
+    Billing.phone = "5555555555";
+
+    var Customer = new ChargeAuthorizeServiceOptions();
+    Customer.total = (decimal)1.00;
+    Customer.currency = "USD";
+    Customer.merchantOrderId = "123";
+    Customer.billingAddr = Billing;
+    Customer.token = "MzIwNzI3ZWQtMjdiNy00NTVhLWFhZTEtZGUyZGQ3MTk1ZDMw";
+
+    var Charge = new ChargeService();
+    
+    var result = Charge.Authorize(Customer);
+    Console.Write(result);
 }
-catch (TwocheckoutException e)
+catch (TwoCheckoutException e)
 {
-	e.message
+    Console.Write(e);
 }
 ```
 
 *Example Exception*
 
 ```json
-{
-   "errors" : [
-      {
-         "code" : "PARAMETER_MISSING",
-         "message" : "Required parameter missing: category",
-         "parameter" : "category"
-      }
-   ]
-}
+Unauthorized
 ```
-
-Full documentation for each binding is provided in the [Wiki](https://github.com/2checkout/2checkout-dotnet/wiki).

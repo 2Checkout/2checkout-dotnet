@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6904FC55-824F-4F02-B286-7BA2E4DE05F4}</ProjectGuid>
+    <ProjectGuid>{219F3CE7-C480-4349-86AD-208FAA831F1C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TwoCheckout</RootNamespace>
-    <AssemblyName>TwoCheckout-latest</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AssemblyName>TwoCheckout</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,21 +30,21 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Service References\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.1.12217, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\NUnit 2.6.1\bin\nunit.framework.dll</HintPath>
+      <HintPath>\\DCCPCOREw-FS01v\2COUsers$\cchristenson\Downloads\Json60r1\Bin\Net20\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\NUnit 2.6.3\bin\framework\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,70 +52,84 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="model\Authorization.cs" />
-    <Compile Include="model\Billing.cs" />
-    <Compile Include="model\Categories.cs" />
-    <Compile Include="model\Comments.cs" />
-    <Compile Include="model\Company.cs" />
-    <Compile Include="model\Contact.cs" />
-    <Compile Include="model\Coupon.cs" />
-    <Compile Include="model\CouponList.cs" />
-    <Compile Include="model\Customer.cs" />
-    <Compile Include="model\DetailIP.cs" />
-    <Compile Include="model\Images.cs" />
-    <Compile Include="model\Invoice.cs" />
-    <Compile Include="model\Lineitems.cs" />
-    <Compile Include="model\LineitemOption.cs" />
-    <Compile Include="model\Option.cs" />
-    <Compile Include="model\OptionList.cs" />
-    <Compile Include="model\OptionValues.cs" />
-    <Compile Include="model\PageInfo.cs" />
-    <Compile Include="model\PayMethod.cs" />
-    <Compile Include="model\ProductOptions.cs" />
-    <Compile Include="model\Product.cs" />
-    <Compile Include="model\ProductList.cs" />
-    <Compile Include="model\SaleList.cs" />
-    <Compile Include="model\Sales.cs" />
+    <Compile Include="Entities\AuthBillingAddress.cs" />
+    <Compile Include="Entities\AuthLineitemOption.cs" />
+    <Compile Include="Entities\Authorization.cs" />
+    <Compile Include="Entities\AuthShippingAddress.cs" />
+    <Compile Include="Entities\Billing.cs" />
+    <Compile Include="Entities\AuthLineitem.cs" />
+    <Compile Include="Entities\Comments.cs" />
+    <Compile Include="Entities\Contact.cs" />
+    <Compile Include="Entities\Coupon.cs" />
+    <Compile Include="Entities\CouponList.cs" />
+    <Compile Include="Entities\Customer.cs" />
+    <Compile Include="Entities\DetailIP.cs" />
+    <Compile Include="Entities\Invoice.cs" />
+    <Compile Include="Entities\Lineitems.cs" />
+    <Compile Include="Entities\OptionList.cs" />
+    <Compile Include="Entities\Options.cs" />
+    <Compile Include="Entities\PageInfo.cs" />
+    <Compile Include="Entities\Payment.cs" />
+    <Compile Include="Entities\PayMethod.cs" />
+    <Compile Include="Entities\Product.cs" />
+    <Compile Include="Entities\ProductList.cs" />
+    <Compile Include="Entities\ProductOptions.cs" />
+    <Compile Include="Entities\Sale.cs" />
+    <Compile Include="Entities\SaleList.cs" />
+    <Compile Include="Entities\Sales.cs" />
+    <Compile Include="Entities\Shipping.cs" />
+    <Compile Include="Services\Account\AccountService.cs" />
+    <Compile Include="Entities\Categories.cs" />
+    <Compile Include="Entities\Company.cs" />
+    <Compile Include="Entities\Images.cs" />
+    <Compile Include="Entities\Option.cs" />
+    <Compile Include="Entities\OptionValues.cs" />
+    <Compile Include="Services\Charge\ChargeAuthorizeServiceOptions.cs" />
+    <Compile Include="Services\Charge\ChargeService.cs" />
+    <Compile Include="Services\Coupon\CouponCreateServiceOptions.cs" />
+    <Compile Include="Services\Coupon\CouponDeleteServiceOptions.cs" />
+    <Compile Include="Services\Coupon\CouponRetrieveServiceOptions.cs" />
+    <Compile Include="Services\Coupon\CouponService.cs" />
+    <Compile Include="Services\Coupon\CouponUpdateServiceOptions.cs" />
+    <Compile Include="Services\Notification\NotificationService.cs" />
+    <Compile Include="Services\Notification\NotificationCheckServiceOptions.cs" />
+    <Compile Include="Services\Option\OptionCreateServiceOptions.cs" />
+    <Compile Include="Services\Option\OptionDeleteServiceOptions.cs" />
+    <Compile Include="Services\Option\OptionListServiceOptions.cs" />
+    <Compile Include="Services\Option\OptionRetrieveServiceOptions.cs" />
+    <Compile Include="Services\Option\OptionService.cs" />
+    <Compile Include="Services\Option\OptionUpdateServiceOptions.cs" />
+    <Compile Include="Services\Product\ProductService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Return\ReturnCheckServiceOptions.cs" />
+    <Compile Include="Services\Return\ReturnService.cs" />
+    <Compile Include="test\TestAccount.cs" />
     <Compile Include="test\TestCharge.cs" />
-    <Compile Include="test\TestCompany.cs" />
-    <Compile Include="test\TestContact.cs" />
     <Compile Include="test\TestCoupon.cs" />
+    <Compile Include="test\TestNotification.cs" />
     <Compile Include="test\TestOption.cs" />
     <Compile Include="test\TestProduct.cs" />
+    <Compile Include="test\TestReturn.cs" />
     <Compile Include="test\TestSale.cs" />
-    <Compile Include="TwocheckoutKey.cs" />
-    <Compile Include="TwocheckoutResponse.cs" />
-    <Compile Include="model\Sale.cs" />
-    <Compile Include="model\Shipping.cs" />
-    <Compile Include="TwocheckoutCharge.cs" />
-    <Compile Include="TwocheckoutException.cs" />
-    <Compile Include="TwocheckoutNotification.cs" />
-    <Compile Include="TwocheckoutCompany.cs" />
-    <Compile Include="TwocheckoutContact.cs" />
-    <Compile Include="TwocheckoutCoupon.cs" />
-    <Compile Include="TwocheckoutOption.cs" />
-    <Compile Include="TwocheckoutProduct.cs" />
-    <Compile Include="TwocheckoutReturn.cs" />
-    <Compile Include="TwocheckoutUtil.cs" />
-    <Compile Include="TwocheckoutApi.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="TwocheckoutSale.cs" />
-    <Compile Include="TwocheckoutConfig.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TwoCheckoutConfig.cs" />
+    <Compile Include="Entities\TwoCheckoutResponse.cs" />
+    <Compile Include="Entities\TwoCheckoutException.cs" />
+    <Compile Include="Services\Product\ProductCreateServiceOptions.cs" />
+    <Compile Include="Services\Product\ProductDeleteServiceOptions.cs" />
+    <Compile Include="Services\Product\ProductListServiceOptions.cs" />
+    <Compile Include="Services\Product\ProductRetrieveServiceOptions.cs" />
+    <Compile Include="Services\Product\ProductUpdateServiceOptions.cs" />
+    <Compile Include="Services\Sale\SaleReauthServiceOptions.cs" />
+    <Compile Include="Services\Sale\SaleCommentServiceOptions.cs" />
+    <Compile Include="Services\Sale\SaleListServiceOptions.cs" />
+    <Compile Include="Services\Sale\SaleRefundServiceOptions.cs" />
+    <Compile Include="Services\Sale\SaleService.cs" />
+    <Compile Include="Services\Sale\SaleRetrieveServiceOptions.cs" />
+    <Compile Include="Services\Sale\SaleShipServiceOptions.cs" />
+    <Compile Include="Services\Sale\SaleStopServiceOptions.cs" />
+    <Compile Include="TwoCheckoutUtil.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

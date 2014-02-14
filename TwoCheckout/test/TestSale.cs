@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using TwoCheckout;
 
@@ -9,17 +7,17 @@ namespace UnitTests
 {
     public class TestSale
     {
-        // Sales
-        String sale_id = "4828598838";
-        String lineitem_id = "4828598922";
-        String invoice_id = "4828598847";
+        // Sale Info
+        long sale_id = 4828598838;
+        long lineitem_id = 4828598922;
+        long invoice_id = 4828598847;
 
         // Set API Credentials
         [Test]
         public void _001_SetUser()
         {
-            TwocheckoutConfig.ApiUsername = "APIuser1817037";
-            TwocheckoutConfig.ApiPassword = "APIpass1817037";
+            TwoCheckoutConfig.ApiUsername = "APIuser1817037";
+            TwoCheckoutConfig.ApiPassword = "APIpass1817037";
         }
 
         // List Sales
@@ -28,12 +26,15 @@ namespace UnitTests
         {
             try
             {
-                var result = TwocheckoutSale.List();
-                Assert.IsInstanceOf<SaleList>( result );
+                var ServiceObject = new SaleService();
+                var ArgsObject = new SaleListServiceOptions();
+                ArgsObject.customer_email = "noreply@2co.com";
+                var result = ServiceObject.List(ArgsObject);
+                Assert.IsInstanceOf<SaleList>(result);
             }
-            catch (TwocheckoutException e)
+            catch (TwoCheckoutException e)
             {
-                Assert.IsInstanceOf<TwocheckoutException>(e);
+                Assert.IsInstanceOf<TwoCheckoutException>(e);
             }
         }
 
@@ -43,14 +44,15 @@ namespace UnitTests
         {
             try
             {
-                var dictionary = new Dictionary<string, string>();
-                dictionary.Add("sale_id", sale_id);
-                var result = TwocheckoutSale.Retrieve(dictionary);
+                var ServiceObject = new SaleService();
+                var ArgsObject = new SaleRetrieveServiceOptions();
+                ArgsObject.sale_id = sale_id;
+                var result = ServiceObject.Retrieve(ArgsObject);
                 Assert.IsInstanceOf<Sale>(result);
             }
-                catch (TwocheckoutException e)
+            catch (TwoCheckoutException e)
             {
-                Assert.IsInstanceOf<TwocheckoutException>(e);
+                Assert.IsInstanceOf<TwoCheckoutException>(e);
             }
         }
 
@@ -60,14 +62,15 @@ namespace UnitTests
         {
             try
             {
-                var dictionary = new Dictionary<string, string>();
-                dictionary.Add("sale_id", sale_id);
-                var result = TwocheckoutSale.Stop(dictionary);
-                Assert.IsInstanceOf<TwocheckoutResponse>(result);
+                var ServiceObject = new SaleService();
+                var ArgsObject = new SaleStopServiceOptions();
+                ArgsObject.sale_id = sale_id;
+                var result = ServiceObject.Stop(ArgsObject);
+                Assert.IsInstanceOf<TwoCheckoutResponse>(result);
             }
-            catch (TwocheckoutException e)
+            catch (TwoCheckoutException e)
             {
-                Assert.IsInstanceOf<TwocheckoutException>(e);
+                Assert.IsInstanceOf<TwoCheckoutException>(e);
             }
         }
 
@@ -77,14 +80,15 @@ namespace UnitTests
         {
             try
             {
-                var dictionary = new Dictionary<string, string>();
-                dictionary.Add("linetiem_id", lineitem_id);
-                var result = TwocheckoutSale.Stop(dictionary);
-                Assert.IsInstanceOf<TwocheckoutResponse>(result);
+                var ServiceObject = new SaleService();
+                var ArgsObject = new SaleStopServiceOptions();
+                ArgsObject.lineitem_id = lineitem_id;
+                var result = ServiceObject.Stop(ArgsObject);
+                Assert.IsInstanceOf<TwoCheckoutResponse>(result);
             }
-                catch (TwocheckoutException e)
+            catch (TwoCheckoutException e)
             {
-                Assert.IsInstanceOf<TwocheckoutException>(e);
+                Assert.IsInstanceOf<TwoCheckoutException>(e);
             }
         }
 
@@ -94,16 +98,17 @@ namespace UnitTests
         {
             try
             {
-                var dictionary = new Dictionary<string, string>();
-                dictionary.Add("sale_id", sale_id);
-                dictionary.Add("comment", "test refund");
-                dictionary.Add("category", "5");
-                var result = TwocheckoutSale.Refund(dictionary);
-                Assert.IsInstanceOf<TwocheckoutResponse>(result);
+                var ServiceObject = new SaleService();
+                var ArgsObject = new SaleRefundServiceOptions();
+                ArgsObject.sale_id = sale_id;
+                ArgsObject.comment = "test refund";
+                ArgsObject.category = 5;
+                var result = ServiceObject.Refund(ArgsObject);
+                Assert.IsInstanceOf<TwoCheckoutResponse>(result);
             }
-            catch (TwocheckoutException e)
+            catch (TwoCheckoutException e)
             {
-                Assert.IsInstanceOf<TwocheckoutException>(e);
+                Assert.IsInstanceOf<TwoCheckoutException>(e);
             }
         }
 
@@ -113,16 +118,17 @@ namespace UnitTests
         {
             try
             {
-                var dictionary = new Dictionary<string, string>();
-                dictionary.Add("invoice_id", invoice_id);
-                dictionary.Add("comment", "test refund");
-                dictionary.Add("category", "5");
-                var result = TwocheckoutSale.Refund(dictionary);
-                Assert.IsInstanceOf<TwocheckoutResponse>(result);
+                var ServiceObject = new SaleService();
+                var ArgsObject = new SaleRefundServiceOptions();
+                ArgsObject.invoice_id = invoice_id;
+                ArgsObject.comment = "test refund";
+                ArgsObject.category = 5;
+                var result = ServiceObject.Refund(ArgsObject);
+                Assert.IsInstanceOf<TwoCheckoutResponse>(result);
             }
-            catch (TwocheckoutException e)
+            catch (TwoCheckoutException e)
             {
-                Assert.IsInstanceOf<TwocheckoutException>(e);
+                Assert.IsInstanceOf<TwoCheckoutException>(e);
             }
         }
 
@@ -132,16 +138,17 @@ namespace UnitTests
         {
             try
             {
-                var dictionary = new Dictionary<string, string>();
-                dictionary.Add("lineitem_id", lineitem_id);
-                dictionary.Add("comment", "test refund");
-                dictionary.Add("category", "5");
-                var result = TwocheckoutSale.Refund(dictionary);
-                Assert.IsInstanceOf<TwocheckoutResponse>(result);
+                var ServiceObject = new SaleService();
+                var ArgsObject = new SaleRefundServiceOptions();
+                ArgsObject.lineitem_id = lineitem_id;
+                ArgsObject.comment = "test refund";
+                ArgsObject.category = 5;
+                var result = ServiceObject.Refund(ArgsObject);
+                Assert.IsInstanceOf<TwoCheckoutResponse>(result);
             }
-            catch (TwocheckoutException e)
+            catch (TwoCheckoutException e)
             {
-                Assert.IsInstanceOf<TwocheckoutException>(e);
+                Assert.IsInstanceOf<TwoCheckoutException>(e);
             }
         }
 
@@ -151,14 +158,15 @@ namespace UnitTests
         {
             try
             {
-                var dictionary = new Dictionary<string, string>();
-                dictionary.Add("sale_id", sale_id);
-                var result = TwocheckoutSale.Reauth(dictionary);
-                Assert.IsInstanceOf<TwocheckoutResponse>(result);
+                var ServiceObject = new SaleService();
+                var ArgsObject = new SaleReauthServiceOptions();
+                ArgsObject.sale_id = sale_id;
+                var result = ServiceObject.Reauth(ArgsObject);
+                Assert.IsInstanceOf<TwoCheckoutResponse>(result);
             }
-            catch (TwocheckoutException e)
+            catch (TwoCheckoutException e)
             {
-                Assert.IsInstanceOf<TwocheckoutException>(e);
+                Assert.IsInstanceOf<TwoCheckoutException>(e);
             }
         }
 
@@ -168,15 +176,15 @@ namespace UnitTests
         {
             try
             {
-                var dictionary = new Dictionary<string, string>();
-                dictionary.Add("sale_id", sale_id);
-                dictionary.Add("tracking_number", "123");
-                var result = TwocheckoutSale.Ship(dictionary);
-                Assert.IsInstanceOf<TwocheckoutResponse>(result);
+                var ServiceObject = new SaleService();
+                var ArgsObject = new SaleShipServiceOptions();
+                ArgsObject.sale_id = sale_id;
+                var result = ServiceObject.Ship(ArgsObject);
+                Assert.IsInstanceOf<TwoCheckoutResponse>(result);
             }
-            catch (TwocheckoutException e)
+            catch (TwoCheckoutException e)
             {
-                Assert.IsInstanceOf<TwocheckoutException>(e);
+                Assert.IsInstanceOf<TwoCheckoutException>(e);
             }
         }
 
@@ -186,15 +194,16 @@ namespace UnitTests
         {
             try
             {
-                var dictionary = new Dictionary<string, string>();
-                dictionary.Add("sale_id", sale_id);
-                dictionary.Add("sale_comment", "Test");
-                var result = TwocheckoutSale.Comment(dictionary);
-                Assert.IsInstanceOf<TwocheckoutResponse>(result);
+                var ServiceObject = new SaleService();
+                var ArgsObject = new SaleCommentServiceOptions();
+                ArgsObject.sale_id = sale_id;
+                ArgsObject.sale_comment = "Test";
+                var result = ServiceObject.Comment(ArgsObject);
+                Assert.IsInstanceOf<TwoCheckoutResponse>(result);
             }
-            catch (TwocheckoutException e)
+            catch (TwoCheckoutException e)
             {
-                Assert.IsInstanceOf<TwocheckoutException>(e);
+                Assert.IsInstanceOf<TwoCheckoutException>(e);
             }
         }
     }
