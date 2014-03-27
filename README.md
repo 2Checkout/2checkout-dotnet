@@ -237,3 +237,9 @@ catch (TwoCheckoutException e)
 ```json
 Unauthorized
 ```
+
+
+
+Acknowledgments
+---------------
+The current master branch replaces the use of dictionaries and static methods with the service option pattern demonstrated by [Jayme Davis] (https://github.com/jaymedavis). 
