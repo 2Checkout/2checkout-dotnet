@@ -6,10 +6,14 @@ namespace TwoCheckout
 {
     public class ChargeService
     {
+        public static String CheckoutUrl = TwoCheckoutConfig.Sandbox ?
+                String.Concat(TwoCheckoutConfig.SandboxUrl, "checkout/purchase") :
+                String.Concat(TwoCheckoutConfig.BaseUrl, "checkout/purchase");
+
         public static String Form(Dictionary<string, string> args, String button)
         {
             StringBuilder Form = new StringBuilder();
-            Form.Append("<form id=\"2checkout\" action=\"https://www.2checkout.com/checkout/purchase\" method=\"post\">\n");
+            Form.Append("<form id=\"2checkout\" action=\"" + CheckoutUrl + "\" method=\"post\">\n");
             foreach (var parameter in args)
             {
                 Form.Append("<input type=\"hidden\" name=\"" + parameter.Key + "\" value=\"" + parameter.Value + "\" />\n");
@@ -21,7 +25,7 @@ namespace TwoCheckout
         public static String Submit(Dictionary<string, string> args, String button)
         {
             StringBuilder Form = new StringBuilder();
-            Form.Append("<form id=\"2checkout\" action=\"https://www.2checkout.com/checkout/purchase\" method=\"post\">\n");
+            Form.Append("<form id=\"2checkout\" action=\"" + CheckoutUrl + "\" method=\"post\">\n");
             foreach (var parameter in args)
             {
                 Form.Append("<input type=\"hidden\" name=\"" + parameter.Key + "\" value=\"" + parameter.Value + "\" />\n");
@@ -33,8 +37,9 @@ namespace TwoCheckout
 
         public static String Link(Dictionary<string, string> args)
         {
-            StringBuilder Link = new StringBuilder("https://www.2checkout.com/checkout/purchase?");
+            StringBuilder Link = new StringBuilder(CheckoutUrl);
             String Parameters = TwoCheckoutUtil.DictionaryToQueryString(args);
+            Link.Append("?");
             Link.Append(Parameters);
             return Link.ToString();
         }

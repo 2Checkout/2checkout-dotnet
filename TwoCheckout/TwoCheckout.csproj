@@ -33,9 +33,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\DCCPCOREw-FS01v\2COUsers$\cchristenson\Downloads\Json60r1\Bin\Net20\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>bin\Release\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -103,14 +102,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Return\ReturnCheckServiceOptions.cs" />
     <Compile Include="Services\Return\ReturnService.cs" />
-    <Compile Include="test\TestAccount.cs" />
-    <Compile Include="test\TestCharge.cs" />
-    <Compile Include="test\TestCoupon.cs" />
-    <Compile Include="test\TestNotification.cs" />
-    <Compile Include="test\TestOption.cs" />
-    <Compile Include="test\TestProduct.cs" />
-    <Compile Include="test\TestReturn.cs" />
-    <Compile Include="test\TestSale.cs" />
     <Compile Include="TwoCheckoutConfig.cs" />
     <Compile Include="Entities\TwoCheckoutResponse.cs" />
     <Compile Include="Entities\TwoCheckoutException.cs" />

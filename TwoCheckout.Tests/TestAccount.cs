@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using TwoCheckout;
 
-namespace UnitTests
+namespace Twocheckout.Tests
 {
     public class TestAccount
     {
