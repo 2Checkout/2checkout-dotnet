@@ -9,7 +9,7 @@ Installation
 ------------
 
 Add TwoCheckout.dll to your project's References and add it's dependencies listed below.
-* [Json.NET 6.0](https://json.codeplex.com/releases/view/117958)
+* [Json.NET 6.0.3](https://json.codeplex.com/releases/view/121470)
 
 
 Example Payment API Usage:
@@ -242,4 +242,4 @@ Unauthorized
 
 Acknowledgments
 ---------------
-The current master branch replaces the use of dictionaries and static methods with the service option pattern demonstrated by [Jayme Davis] (https://github.com/jaymedavis). 
+The current master branch replaces the use of dictionaries and static methods with the service option pattern demonstrated by [Jayme Davis] (https://github.com/jaymedavis).
