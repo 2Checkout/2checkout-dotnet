@@ -30,7 +30,7 @@ namespace TwoCheckout
 	            }
             }
             stoppedLineitems = stoppedLineitems.Remove(0, 1); //drop the leading comma
-            return "{ 'response_code': 'OK', 'response_message': " + stoppedLineitems + " }";
+            return "{ 'response_code': 'OK', 'response_message': '" + stoppedLineitems + "' }";
         }
 
         public static Dictionary<string, string> Active(String response)
