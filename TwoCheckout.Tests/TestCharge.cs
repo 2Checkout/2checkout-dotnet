@@ -51,7 +51,7 @@ namespace Twocheckout.Tests
                 Billing.country = "USA";
                 Billing.name = "Testing Tester";
                 Billing.email = "example@2co.com";
-                Billing.phone = "5555555555";
+                Billing.phoneNumber = "5555555555";
 
                 var Shipping = new AuthShippingAddress();
                 Shipping.addrLine1 = "123 test st";

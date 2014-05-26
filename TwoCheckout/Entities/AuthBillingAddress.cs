@@ -10,7 +10,7 @@
         public string zipCode { get; set; }
         public string country { get; set; }
         public string email { get; set; }
-        public string phone { get; set; }
+        public string phoneNumber { get; set; }
         public string phoneExt { get; set; }
     }
 }

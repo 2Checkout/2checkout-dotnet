@@ -32,7 +32,7 @@ try
     Billing.country = "USA";
     Billing.name = "Testing Tester";
     Billing.email = "example@2co.com";
-    Billing.phone = "5555555555";
+    Billing.phoneNumber = "5555555555";
 
     var Customer = new ChargeAuthorizeServiceOptions();
     Customer.total = (decimal)1.00;
@@ -86,7 +86,7 @@ catch (TwoCheckoutException e)
         zipCode: "43123"
         country: "USA"
         email: "example@2co.com"
-        phone: null
+        phoneNumber: null
         phoneExt: null
 ```
 
