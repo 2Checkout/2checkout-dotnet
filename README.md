@@ -3,7 +3,7 @@
 
 This library provides developers with a simple set of bindings to the 2Checkout purchase routine, Instant Notification Service and Back Office API.
 
-Full documentation for each binding is provided at [https://www.2checkout.com/documentation/libraries/net](https://www.2checkout.com/documentation/libraries/net).
+Full documentation for each binding is provided at [in the wiki](https://github.com/2Checkout/2checkout-dotnet/wiki).
 
 Installation
 ------------
@@ -238,7 +238,7 @@ catch (TwoCheckoutException e)
 Unauthorized
 ```
 
-
+Full documentation for each binding is provided at [in the wiki](https://github.com/2Checkout/2checkout-dotnet/wiki).
 
 Acknowledgments
 ---------------
