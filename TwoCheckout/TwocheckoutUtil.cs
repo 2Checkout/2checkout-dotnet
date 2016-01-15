@@ -150,6 +150,7 @@ namespace TwoCheckout
             {
                 Request = WebRequest.Create(Url.ToString()) as HttpWebRequest;
                 ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                 Request.Credentials = Credential;
                 Request.Method = method;
                 Request.ContentType = ContentType;
