@@ -189,10 +189,11 @@ namespace TwoCheckout
                         {
                             Result = RawError["exception"]["errorMsg"].ToString();
                         }
-                        throw new TwoCheckoutException(Result);
                     }
+                } else {
+                    Result = wex.Message;
                 }
-                return Result;
+                throw new TwoCheckoutException(Result);
             }
             finally
             {
