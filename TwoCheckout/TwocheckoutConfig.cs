@@ -13,6 +13,6 @@ namespace TwoCheckout
         public static Boolean Demo { get; set; }
         public static String BaseUrl = "https://www.2checkout.com/";
         public static String SandboxUrl = "https://sandbox.2checkout.com/";
-        public static String Version = "4.0.0";
+        public static String Version = "4.1.0";
     }
 }

@@ -13,5 +13,7 @@ namespace TwoCheckout
         public List<AuthLineitem> lineItems { get; set; }
         public AuthBillingAddress billingAddr { get; set; }
         public AuthShippingAddress shippingAddr { get; set; }
+        public string returnUrl { get; set; }
+        public bool demo { get; set; }
     }
 }

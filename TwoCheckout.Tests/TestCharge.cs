@@ -68,7 +68,7 @@ namespace Twocheckout.Tests
                 Sale.billingAddr = Billing;
                 Sale.shippingAddr = Shipping;
                 Sale.token = token;
-
+                Sale.returnUrl = "http://www.2checkout.com/documentation";
                 var Charge = new ChargeService();
 
                 var result = Charge.Authorize(Sale);
