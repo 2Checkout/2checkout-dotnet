@@ -150,7 +150,7 @@ namespace TwoCheckout
             {
                 Request = WebRequest.Create(Url.ToString()) as HttpWebRequest;
                 ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
                 Request.Credentials = Credential;
                 Request.Method = method;
                 Request.ContentType = ContentType;
@@ -174,6 +174,7 @@ namespace TwoCheckout
             }
             catch (WebException wex)
             {
+                String ResultCode = null;
                 if (wex.Response != null)
                 {
                     using (HttpWebResponse errorResponse = (HttpWebResponse)wex.Response)
@@ -184,16 +185,19 @@ namespace TwoCheckout
                         if (RawError["errors"] != null)
                         {
                             Result = RawError["errors"][0]["message"].ToString();
+                            ResultCode = RawError["errors"][0]["code"].ToString();
                         }
                         else if (RawError["exception"] != null)
                         {
                             Result = RawError["exception"]["errorMsg"].ToString();
+                            ResultCode = RawError["exception"]["errorCode"].ToString();
                         }
                     }
                 } else {
                     Result = wex.Message;
+                    ResultCode = "500";
                 }
-                throw new TwoCheckoutException(Result);
+                throw new TwoCheckoutException(Result) { Code = ResultCode };
             }
             finally
             {
