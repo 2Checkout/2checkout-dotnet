@@ -152,24 +152,6 @@ namespace Twocheckout.Tests
             }
         }
 
-        // Sale Reauth
-        [Test]
-        public void _009_TestSaleReauth()
-        {
-            try
-            {
-                var ServiceObject = new SaleService();
-                var ArgsObject = new SaleReauthServiceOptions();
-                ArgsObject.sale_id = sale_id;
-                var result = ServiceObject.Reauth(ArgsObject);
-                Assert.IsInstanceOf<TwoCheckoutResponse>(result);
-            }
-            catch (TwoCheckoutException e)
-            {
-                Assert.IsInstanceOf<TwoCheckoutException>(e);
-            }
-        }
-
         // Sale Ship
         [Test]
         public void _010_TestSaleShipped()

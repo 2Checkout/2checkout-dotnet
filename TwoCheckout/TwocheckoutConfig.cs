@@ -9,10 +9,8 @@ namespace TwoCheckout
         public static String SellerID { get; set; }
         public static String PrivateKey { get; set; }
         public static String SecretWord { get; set; }
-        public static Boolean Sandbox { get; set; }
         public static Boolean Demo { get; set; }
         public static String BaseUrl = "https://www.2checkout.com/";
-        public static String SandboxUrl = "https://sandbox.2checkout.com/";
-        public static String Version = "4.1.0";
+        public static String Version = "5.0.0";
     }
 }
