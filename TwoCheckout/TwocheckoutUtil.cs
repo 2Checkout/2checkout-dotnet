@@ -124,9 +124,7 @@ namespace TwoCheckout
         public static String Request(String urlSuffix, String method, String type, Object args = null)
         {
             HttpWebRequest Request;
-            String Url = TwoCheckoutConfig.Sandbox ? 
-                String.Concat(TwoCheckoutConfig.SandboxUrl, urlSuffix) : 
-                String.Concat(TwoCheckoutConfig.BaseUrl, urlSuffix);
+            String Url = String.Concat(TwoCheckoutConfig.BaseUrl, urlSuffix);
             String Params = null;
             String Result = null;
             String ContentType = null;

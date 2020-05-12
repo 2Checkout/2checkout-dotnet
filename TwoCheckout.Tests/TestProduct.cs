@@ -64,19 +64,6 @@ namespace Twocheckout.Tests
             Assert.IsInstanceOf<ProductList>(result);
         }
 
-        // Update Product
-        [Test]
-        public void _005_TestProductUpdate()
-        {
-            var ServiceObject = new ProductService();
-            var ArgsObject = new ProductUpdateServiceOptions();
-            ArgsObject.approved_url = "http://www.example.com/update";
-            ArgsObject.description = "Test123";
-            ArgsObject.product_id = product_id;
-            var result = ServiceObject.Update(ArgsObject);
-            Assert.IsInstanceOf<TwoCheckoutResponse>(result);
-        }
-
         // Delete Product
         [Test]
         public void _006_TestProductDelete()

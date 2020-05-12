@@ -8,14 +8,14 @@ namespace Twocheckout.Tests
     public class TestCharge
     {
         // Token
-        String token = "YjdhN2Q0ZDItZDEzYS00Y2RlLWI3MDUtYjkzYzZlMjA2OWY2";
+        String token = "token";
 
         // Set API Key
         [Test]
         public void _002_SetKey()
         {
-            TwoCheckoutConfig.PrivateKey = "99999999999999999999";
-            TwoCheckoutConfig.SellerID = "1817037";
+            TwoCheckoutConfig.PrivateKey = "private-key";
+            TwoCheckoutConfig.SellerID = "seller-id";
         }
 
         // API Authorization
@@ -49,7 +49,7 @@ namespace Twocheckout.Tests
                 Billing.zipCode = "43123";
                 Billing.state = "OH";
                 Billing.country = "USA";
-                Billing.name = "Testing Tester";
+                Billing.name = "John Doe";
                 Billing.email = "example@2co.com";
                 Billing.phoneNumber = "5555555555";
 
@@ -57,8 +57,9 @@ namespace Twocheckout.Tests
                 Shipping.addrLine1 = "123 test st";
                 Shipping.city = "Columbus";
                 Shipping.state = "OH";
+                Shipping.zipCode = "43123";
                 Shipping.country = "USA";
-                Shipping.name = "Testing Tester";
+                Shipping.name = "John Doe";
 
 
                 var Sale = new ChargeAuthorizeServiceOptions();
@@ -69,6 +70,7 @@ namespace Twocheckout.Tests
                 Sale.shippingAddr = Shipping;
                 Sale.token = token;
                 Sale.returnUrl = "http://www.2checkout.com/documentation";
+                Sale.demo = true;
                 var Charge = new ChargeService();
 
                 var result = Charge.Authorize(Sale);

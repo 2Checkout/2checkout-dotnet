@@ -6,9 +6,7 @@ namespace TwoCheckout
 {
     public class ChargeService
     {
-        public static String CheckoutUrl = TwoCheckoutConfig.Sandbox ?
-                String.Concat(TwoCheckoutConfig.SandboxUrl, "checkout/purchase") :
-                String.Concat(TwoCheckoutConfig.BaseUrl, "checkout/purchase");
+        public static String CheckoutUrl = String.Concat(TwoCheckoutConfig.BaseUrl, "checkout/purchase");
 
         public static String Form(Dictionary<string, string> args, String button)
         {

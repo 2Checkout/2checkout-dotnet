@@ -61,12 +61,6 @@ namespace TwoCheckout
             return TwoCheckoutUtil.MapToObject<TwoCheckoutResponse>(Result);
         }
 
-        public TwoCheckoutResponse Reauth(SaleReauthServiceOptions options)
-        {
-            String Result = TwoCheckoutUtil.Request("api/sales/reauth", "POST", "admin", options);
-            return TwoCheckoutUtil.MapToObject<TwoCheckoutResponse>(Result);
-        }
-
         public TwoCheckoutResponse Ship(SaleShipServiceOptions options)
         {
             String Result = TwoCheckoutUtil.Request("api/sales/mark_shipped", "POST", "admin", options);

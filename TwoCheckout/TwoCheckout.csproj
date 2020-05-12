@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TwoCheckout</RootNamespace>
     <AssemblyName>TwoCheckout</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,8 +61,9 @@
     <Compile Include="Entities\DetailIP.cs" />
     <Compile Include="Entities\Invoice.cs" />
     <Compile Include="Entities\Lineitems.cs" />
-    <Compile Include="Entities\OptionList.cs" />
+    <Compile Include="Entities\Option.cs" />
     <Compile Include="Entities\Options.cs" />
+    <Compile Include="Entities\OptionValues.cs" />
     <Compile Include="Entities\PageInfo.cs" />
     <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\PayMethod.cs" />
@@ -78,23 +79,10 @@
     <Compile Include="Entities\Categories.cs" />
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\Images.cs" />
-    <Compile Include="Entities\Option.cs" />
-    <Compile Include="Entities\OptionValues.cs" />
     <Compile Include="Services\Charge\ChargeAuthorizeServiceOptions.cs" />
     <Compile Include="Services\Charge\ChargeService.cs" />
-    <Compile Include="Services\Coupon\CouponCreateServiceOptions.cs" />
-    <Compile Include="Services\Coupon\CouponDeleteServiceOptions.cs" />
-    <Compile Include="Services\Coupon\CouponRetrieveServiceOptions.cs" />
-    <Compile Include="Services\Coupon\CouponService.cs" />
-    <Compile Include="Services\Coupon\CouponUpdateServiceOptions.cs" />
     <Compile Include="Services\Notification\NotificationService.cs" />
     <Compile Include="Services\Notification\NotificationCheckServiceOptions.cs" />
-    <Compile Include="Services\Option\OptionCreateServiceOptions.cs" />
-    <Compile Include="Services\Option\OptionDeleteServiceOptions.cs" />
-    <Compile Include="Services\Option\OptionListServiceOptions.cs" />
-    <Compile Include="Services\Option\OptionRetrieveServiceOptions.cs" />
-    <Compile Include="Services\Option\OptionService.cs" />
-    <Compile Include="Services\Option\OptionUpdateServiceOptions.cs" />
     <Compile Include="Services\Product\ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Return\ReturnCheckServiceOptions.cs" />
@@ -107,7 +95,6 @@
     <Compile Include="Services\Product\ProductListServiceOptions.cs" />
     <Compile Include="Services\Product\ProductRetrieveServiceOptions.cs" />
     <Compile Include="Services\Product\ProductUpdateServiceOptions.cs" />
-    <Compile Include="Services\Sale\SaleReauthServiceOptions.cs" />
     <Compile Include="Services\Sale\SaleCommentServiceOptions.cs" />
     <Compile Include="Services\Sale\SaleListServiceOptions.cs" />
     <Compile Include="Services\Sale\SaleRefundServiceOptions.cs" />
@@ -117,7 +104,9 @@
     <Compile Include="Services\Sale\SaleStopServiceOptions.cs" />
     <Compile Include="TwoCheckoutUtil.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
